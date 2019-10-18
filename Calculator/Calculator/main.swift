@@ -35,11 +35,11 @@ let result = closureOperation(45 , 5)
 //======================================================================================================================
 
 func customMap(arr: [Double], closure: (Double) -> Double) -> [Double] {
-   var transformedArr = [Double]()
+   var newArray = [Double]()
    for num in arr {
-       transformedArr.append(closure(num))
+       newArray.append(closure(num))
    }
-   return transformedArr
+   return newArray
 }
 
 //======================================================================================================================
@@ -134,7 +134,7 @@ Ex: 5 ? 3 = 15 (ENTER '*' as your answer)
             print("Guess the operation for \"?\" ")
             let userGuess = readLine() ?? ""
             if userGuess == randomPick {
-            print("🎊🎊 CORRECT 🥳🥳")
+            print("🎊 🎊 YOU ARE CORRECT 🥳 🥳")
             } else {
             print("Please try again!")
                 }
@@ -142,8 +142,8 @@ Ex: 5 ? 3 = 15 (ENTER '*' as your answer)
         }
         
         
-        print("Press (a) + enter to go again!")
-        loop = true    // repeat
+        print("ENTER (a) CALCULATOR or (b) HIGHER ORDER FUNCTION")
+        loop = true
         
 //=======================================================================================================
 
@@ -207,7 +207,7 @@ Ex: 5 ? 3 = 15 (ENTER '*' as your answer)
         default:
             print("Try again!")
         }
-    }
+    } 
 }
 } while loop
 
