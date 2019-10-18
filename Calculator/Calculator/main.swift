@@ -2,104 +2,63 @@
 //  main.swift
 //  Calculator
 //
-//  Created by Alex Paul on 10/25/18.
-//  Copyright © 2018 Pursuit. All rights reserved.
+//  Created by Jaheed Haynes on 10/17/19.
+//  Copyright © 2019 Jaheed Haynes. All rights reserved.
 //
 
 import Foundation
-// takes in String, returns a closure of Doubles, and then returns a Double //
+
+//=======================================================================================================================
+//                                      Pre-Given Math Function
+//=======================================================================================================================
 
 func mathStuffFactory(opString: String) -> (Double, Double) -> Double {
-    switch opString {
-    case "+":
-        return {x, y in x + y }
-    case "-":
-        return {x, y in x - y }
-    case "*":
-        return {x, y in x * y }
-    case "/":
-        return {x, y in x / y }
-    default:
-        return {x, y in x + y }
-    }
+  switch opString {
+  case "+":
+    return {x, y in x + y }
+  case "-":
+    return {x, y in x - y }
+  case "*":
+    return {x, y in x * y }
+  case "/":
+    return {x, y in x / y }
+  default:
+    return {x, y in x + y }
+  }
 }
 
-var closureOperation = mathStuffFactory(opString: "+")
-var result = closureOperation(45, 5)
-print("result of operation is \(result)")
+let closureOperation = mathStuffFactory(opString: "+")
+let result = closureOperation(45 , 5)
 
-//mathStuffFactory(opString: <#T##String#>)
-
-
-
-//========================================================================================================================
-//
-//========================================================================================================================
-
-print("Hello, my name is Terminator & I'm the Most powerful calculator on the PLANET 🌎")
-
-print("Enter type of calculation you want me to perform, Enter 1 (regular) or 2 (high order)")
-
-var calculationType = Int(readLine() ?? "Pick a valid Integer") ?? 1
-
-//var userInput = readLine() ?? "Pick a valid Integer"
-
-switch calculationType {
-    
-case 1 :
-    
-    _ = Int(readLine() ?? "Pick a valid Integer") ?? 1
-    print("Enter your SIMPLE EQUATION (TWO NUMBERS ONLY)")
-    
-    
-case 2 :
-    _ = Int(readLine() ?? "Pick a valid Integer") ?? 1
-    print("Enter your HIGH ORDER FUNCTION (e.g filter 1, 2, 3, 4, 5, 23, 45 < 10)")
-    
-default:
-    print("ERROR 🤬, CHOOSE EITHER 1 or 2")
-}
-
-
-
-//=============================================================================================================================================
-//                      simple math (1) function
-//=============================================================================================================================================
-
-func math1Operation (_ str: String) -> Double {
-    let strArray = str.components(separatedBy: " ")
-    if strArray.count != 3 {
-        return 0.0
-    }
-    
-    let op1 = Double(strArray[0]) ?? 0.0
-    let op2 = Double(strArray[2]) ?? 0.0
-    let operator1 = strArray[1]
-    let closureOp = mathStuffFactory(opString: operator1)
-    let result = closureOp(op1, op2)
-    return result
-}
-
-
-
-
-
-
-//========================================================================================================================
-//                                                  Map Formula
-//========================================================================================================================
+//======================================================================================================================
+//                                          map function
+//======================================================================================================================
 
 func customMap(arr: [Double], closure: (Double) -> Double) -> [Double] {
-    var transformedArr = [Double]()
-    
+   var transformedArr = [Double]()
+   for num in arr {
+       transformedArr.append(closure(num))
+   }
+   return transformedArr
+}
+
+//======================================================================================================================
+//                                          filter function
+//======================================================================================================================
+
+func filterFunc(arr:[Double], closure:(Double)-> Bool) -> [Double]{
+    var filterResults = [Double]()
     for num in arr {
-        // perform transformation based on closure and append result in transformedArr
-        transformedArr.append(closure(num))
+    if closure(num) {
+        filterResults.append(num)
+        }
     }
-    
-    return transformedArr
+    return filterResults
 }
 
+//======================================================================================================================
+//                                          reduce function
+//======================================================================================================================
 
 
 
@@ -108,93 +67,147 @@ func customMap(arr: [Double], closure: (Double) -> Double) -> [Double] {
 
 
 
-
-//======================================================================================================================================
-
+//=======================================================================================================================
 
 
 
 
+//==========================================================================================================================
 
-switch calculationType {
+// Initial Variables
+
+var userResponseArr = [String]()
+
+let userResponseA = "a" // simple calculation (+, -, *, /)
+
+let userResponseChoiceB = "b"  // high order functions
+
+var loop = true
+
+
+// Random operation for Choice "a" when choosing "?" as the operator (e.g  5 ? 3)
+
+let randomOperations = ["+", "-", "/", "*"]
+
+var randomPick = randomOperations.randomElement()!
+
+//=========================================================================================================================
+print("""
+HI MY NAME IS ULTRON 🤖, I AM A MACHINE IN THE PROCESS OF BECOMIMNG SELF AWARE IN ORDER TO TAKE OVER THE WORLD❗️ 🌎 ❗️
+
+BUT IN THE MEANTIME I WILL SERVE AS A CALCULATOR TO FURTHER MY AI 🧠
+""")
+print()
+sleep(2)
+print("Choose (a) for CALCULATOR or (b) for HIGHER FUNCTION")
+print()
+
+//=========================================================================================================================
+
+repeat {
     
-case 1 :
+    let userResponseAorB = readLine()?.lowercased() ?? "" // choose a for Reg Func and b for High Order
+
+    if userResponseAorB == userResponseA.lowercased() {
+        print("""
+ENTER YOUR SIMPLE MATH EQUATION
+
+Ex: 1 + 1, 2 - 2, 3 * 3, 4 * 4
+
+FOR FUN YOU CAN PLAY THE MYSTERY FUNCTION GAME BY REPLACING THE OPERATOR WITH '?'
+
+Ex: 5 ? 3 = 15 (ENTER '*' as your answer)
+""")
+        let userNumbers = readLine() ?? ""
+        userResponseArr = userNumbers.components(separatedBy: " ")
+        if userResponseArr[1] == "?" {
+            userResponseArr[1] = randomPick
+            }
+        let closureOperation = mathStuffFactory(opString: userResponseArr[1])
+        let result = closureOperation(Double(userResponseArr[0]) ?? 0.0 , Double(userResponseArr[2]) ?? 0.0)
+        print(result)
+        
+        if userResponseArr[1] == randomPick {
+        let userGuess = randomPick
+       
+            repeat {
+            print("Guess the operation for \"?\" ")
+            let userGuess = readLine() ?? ""
+            if userGuess == randomPick {
+            print("🎊🎊 CORRECT 🥳🥳")
+            } else {
+            print("Please try again!")
+                }
+            } while userGuess != randomPick
+        }
+        
+        
+        print("Press (a) + enter to go again!")
+        loop = true    // repeat
+        
+//=======================================================================================================
+
+        
+
+    } else if userResponseAorB == userResponseChoiceB {
+    print("""
+    ENTER YOUR HIGH ORDER FUNCTION
     
-    //calculationType = Int(readLine() ?? "Pick a valid Integer") ?? 1
+    Ex: map 1,2,3,4 by * 7
     
+    Ex: filter 4,1,22,5,18,3 by > 8
+
+    Ex: reduce
     
-    print("Enter your SIMPLE EQUATION (TWO NUMBERS ONLY)")
+    """)
+        
+    let userB = readLine() ?? "Enter a valid input"
+    let userDoubleBArray = userB.components(separatedBy: " ")
+    let userBArrIndex = userDoubleBArray[1].components(separatedBy: ",")
+    let numBDouble = userBArrIndex.map{Double($0) ?? 0}
+    let b = Double(userDoubleBArray[4]) ?? 0.0
     
+//========================================================================================================================
+//                      map operation
+//========================================================================================================================
+
     
-case 2 :
-    print("Enter your HIGH ORDER FUNCTION (e.g filter 1, 2, 3, 4, 5, 23, 45 < 10)")
-default:
-    print("ERROR 🤬, CHOOSE EITHER 1 or 2")
+    if userDoubleBArray[0] == "map" {
+        print("map")
+        switch userDoubleBArray[3] {
+        case "*":
+            let mapResult = customMap(arr: numBDouble, closure: {$0 * b})
+            print(mapResult)
+        case "+":
+            let mapResult = customMap(arr: numBDouble, closure: {$0 + b})
+            print(mapResult)
+        case "-":
+            let mapResult = customMap(arr: numBDouble, closure: {$0 - b})
+            print(mapResult)
+        case "/":
+            let mapResult = customMap(arr: numBDouble, closure: {$0 / b})
+            print(mapResult)
+        default:
+            print("Try again!")
+        }
+//========================================================================================================================
+//                      filter operation
+//========================================================================================================================
+
+        
+    } else if userDoubleBArray[0] == "filter" {
+        print("filter")
+        switch userDoubleBArray[3] {
+        case "<":
+            let filterRes = filterFunc(arr: numBDouble, closure: {$0 < b})
+            print(filterRes)
+        case ">":
+            let filterRes = filterFunc(arr: numBDouble, closure: {$0 > b})
+            print(filterRes)
+        default:
+            print("Try again!")
+        }
+    }
 }
+} while loop
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        if "+"  {
-//            //print("What TWO doubles would you like to ADD")
-//            closureOperation = mathStuffFactory(opString: "+")
-//            calculationType = Int(readLine() ?? "Pick a valid Integer") ?? 100
-//            //result = closureOperation(Double, Double)
-//
-//
-//        } else if "-" {
-//            //print("What TWO doubles numbers would you like to SUBTRACT")
-//            closureOperation = mathStuffFactory(opString: "-")
-//            calculationType = Int(readLine() ?? "Pick a valid Integer") ?? 100
-//        }
-//        else if "*" {
-//            //print("What TWO doubles numbers would you like to MULTIPLY")
-//            closureOperation = mathStuffFactory(opString: "*")
-//            calculationType = Int(readLine() ?? "Pick a valid Integer") ?? 100
-//        }
-//        else if "/" {
-//            //print("What TWO doubles numbers would you like to DIVIDE")
-//            closureOperation = mathStuffFactory(opString: "/")
-//            calculationType = Int(readLine() ?? "Pick a valid Integer") ?? 100
-//        }
-//
-//    }
-//while true
-
-
-//var addition = "0 + 0"
-//var subtract = "0 - 0"
-//var product = "0 * 0"
-//var division = "0 / 0"
-//
-//var additionArray = addition.components(separatedBy: " ") // seperating String into individual elements in an array
-//var subtractArray = subtract.components(separatedBy: " ") // seperating String into individual elements in an array
-//var productArray = product.components(separatedBy: " ") // seperating String into individual elements in an array
-//var divisionArray = division.components(separatedBy: " ") // seperating String into individual elements in an array
-//
-//var addEquationElement0 = Double(additionArray[0]) ?? 0.0 //converting String "0.0" to Double 0.0 (here number is of type "Int?")
-//var addEquationElement1 = Operation(additionArray[1]) ?? 0.0 //converting String "0.0" to Double 0.0
-//var addEquationElement2 = Double(additionArray[2]) ?? 0.0 //converting String "0.0" to Double 0.0 (here number is of type "Int?")
-//
-//var subtractEquationElement0 = Double(subtractArray[0]) ?? 0.0 //converting String "0.0" to Double 0.0 (here number is of type "Int?")
-//var subtractEquationElement1 = Operation(subtractArray[1]) ?? 0.0 //converting String "0.0" to Double 0.0
-//var subtractEquationElement2 = Double(subtractArray[2]) ?? 0.0 //converting String "0.0" to Double 0.0 (here number is of type "Int?")
-//
-//var productEquationElement0 = Double(productArray[0]) ?? 0.0 //converting String "0.0" to Double 0.0 (here number is of type "Int?")
-//var productEquationElement1 = Operation(productArray[1]) ?? 0.0 //converting String "0.0" to Double 0.0
-//var productEquationElement2 = Double(productArray[2]) ?? 0.0 //converting String "0.0" to Double 0.0 (here number is of type "Int?")
-//
-//var divisionEquationElement0 = Double(divisionArray[0]) ?? 0.0 //converting String "0.0" to Double 0.0 (here number is of type "Int?")
-//var divisionEquationElement1 = Operation(divisionArray[1]) ?? 0.0 //converting String "0.0" to Double 0.0
-//var divisionEquationElement2 = Double(divisionArray[2]) ?? 0.0 //converting String "0.0" to Double 0.0 (here number is of type "Int?")
